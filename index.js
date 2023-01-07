@@ -1,56 +1,61 @@
-// let firstCard = 10
-// let secondCard = 7
-// let cards = [firstCard, secondCard]
-// let sum = firstCard + secondCard
-// let hasBlackjack = false
-// let isAlive = true
-// let message = ''
-// let messageEl = document.getElementById('message-el')
-// let sumEl = document.querySelector('#sum-el')
-// let cardsEl = document.querySelector('#cards-el')
+let player = {
+    name: 'Juan',
+    chips: 420
+}
+let cards = []
+let sum = 0
+let hasBlackjack = false
+let isAlive = false
+let message = ''
+let messageEl = document.getElementById('message-el')
+let playerEl = document.getElementById('player-el')
+let sumEl = document.querySelector('#sum-el')
+let cardsEl = document.querySelector('#cards-el')
+playerEl.textContent = player.name + ': $' + player.chips 
 
-// function startGame() {
-//     renderGame()
-// }
+function startGame() {
+    isAlive = true
+    let firstCard = getRandomCard()
+    let secondCard = getRandomCard()
+    cards = [firstCard, secondCard]
+    sum = firstCard + secondCard
+    renderGame()
+}
 
-// function renderGame() {
-//     sumEl.textContent = 'Sum: ' + sum
-//     cardsEl.textContent = 'Cards: ' + cards[0] + ' ' + cards[1]
-//     if (sum <= 20) {
-//         message = 'Do you want to draw a new card?'
-//     } else if (sum === 21) {
-//         message = 'Woohoo! You\'ve got Blackjack!'
-//         hasBlackjack = true
-//     } else {
-//         message = 'You\'re out of the game!'
-//         isAlive = false
-//     }
-//     messageEl.textContent = message
-// }
+function getRandomCard() {
+    let randomCard = Math.floor(Math.random() * 13) + 1
+    if (randomCard === 1) {
+        return 11
+    } else if (randomCard > 10) {
+        return 10
+    } else {
+        return randomCard
+    }
+}
 
-// function newCard() {
-//     console.log('Drawing a new card from the deck!')
-//     let card = 4
-//     sum += card
-//     startGame()
-// }
+function renderGame() {
+    cardsEl.textContent = 'Cards: '
+    for (let i = 0; i < cards.length; i++) {
+        cardsEl.textContent += cards[i] + ' '
+    }
+    sumEl.textContent = 'Sum: ' + sum
+    if (sum <= 20) {
+        message = 'Do you want to draw a new card?'
+    } else if (sum === 21) {
+        message = 'Woohoo! You\'ve got Blackjack!'
+        hasBlackjack = true
+    } else {
+        message = 'You\'re out of the game!'
+        isAlive = false
+    }
+    messageEl.textContent = message
+}
 
-// let cards = [2, 7]
-// cards.push(8)
-// console.log(cards)
-
-let messages = [
-    'Hey, how\'s it going?',
-    'I\'m great, thank you! How about you?',
-    'All good. Been working on my portfolio lately.'
-]
-
-let newMessage = 'Same here!'
-
-messages.push(newMessage)
-
-console.log(messages)
-
-messages.pop()
-
-console.log(messages)
+function newCard() {
+    if (isAlive === true && hasBlackjack === false) {
+        let card = getRandomCard()
+        sum += card
+        cards.push(card)
+        renderGame()
+    }
+}
